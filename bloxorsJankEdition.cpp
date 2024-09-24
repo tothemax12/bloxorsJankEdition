@@ -3,6 +3,10 @@
 #include <conio.h>
 #include <stdlib.h>
 
+//libraries for reading in a map
+#include <fstream>
+#include <iostream>
+
 //definitions of block state
 #define VERTICAL 0
 #define HORIZONTAL 1
@@ -13,17 +17,47 @@
 std::string map = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXHXXXXXXX";
 //std::string map = "#########XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XXXXXX##XHXXXX##XXX####";
 
-int mapRowSize = 6;
+int mapRowSize = 60;
 
 
+//map reading in functionality
+std::string readInMap(std::string mapName) {
+	std::string map;
+
+	// Open the input file named "input.txt"
+	std::ifstream inputFile(".\\maps\\" + mapName + ".txt");
+
+	// Check if the file is successfully opened
+	if (!inputFile.is_open()) {
+		return "-1";
+	}
+	else {
+		//read in the map
+		getline(inputFile, map);
+	}
+
+	inputFile.close();
+	
+	return map;
+}
+
+//parsing a map string
+//if you come across an X, move back one char and print a new line.
+//this is so we print the boundaries correctly
 void printMap(std::string map, int playerCords[]) {
 	map[playerCords[0]] = '0';
 	map[playerCords[1]] = '0';
 
-	for (int i = 0; i < map.length(); i++) {
+	int mapLen = map.length();
+	for (int i = 0; i < mapLen; i++) {
 		//new row
-		if (!(i % 6)) {
+		if (map[i] == ',') {
 			printf("\n");
+			continue;
+		}
+
+		if (map[i] == '.') {
+			continue;
 		}
 
 		//print the player out
@@ -221,6 +255,11 @@ public:
 	}
 };
 
+//1 if you lost
+int checkLevelLose(int cord1, int cord2) {
+	return (map[cord1] == '#' || map[cord2] == '#');
+}
+
 int checkLevelWin(int cord, int state) {
 	//check if the player vertically fell into the hole
 	return ((state == VERTICAL) && (map[cord] == 'H'));
@@ -230,14 +269,21 @@ int main() {
 	//game loop
 	//int test[2] = {0, 1};
 	Player testPlayer = Player();
+	map = readInMap("level1");
 
 	while (1) {
 		//display
+		//printMap(map, testPlayer.cordinate);
 		printMap(map, testPlayer.cordinate);
 
 		//get user input
 		char input = _getch();
 		testPlayer.updatePlayerCords(input);
+
+		if (checkLevelLose(testPlayer.cordinate[0], testPlayer.cordinate[1])) {
+			printf("You Fell!");
+			break;
+		}
 
 		if (checkLevelWin(testPlayer.cordinate[0], testPlayer.state)) {
 			system("CLS");
