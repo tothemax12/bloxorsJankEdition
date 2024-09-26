@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Player\Player.h"
+#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Level\Level.h"
 
 //libraries for reading in a map
 #include <fstream>
@@ -10,9 +11,7 @@
 
 //map is 30x30
 std::string map = "";
-
 int mapRowSize = 60;
-
 
 //map reading in functionality
 std::string readInMap(std::string mapName) {
@@ -80,6 +79,32 @@ int checkLevelWin(int cord, int state) {
 	return ((state == 0) && (map[cord] == 'H'));
 }
 
+//modifies the map by adding walkable tiles when a button is pressed
+//second arg is to be passed an array with -1 indicating the end is reached
+void addBridge(std::string &map, int* cordsOfTilesToReplace) {
+	//pressing the switch again will change the bridge
+	static bool bridgeOn = false;
+	for (int i = 0; *(cordsOfTilesToReplace + i) != -1; i++) {
+		map[cordsOfTilesToReplace[i]] = bridgeOn ? ('#') : ('X');
+	}
+	bridgeOn = !bridgeOn;
+}
+
+void handleMapTiles(int cord1, int cord2) {
+	int cordsForBridge[3] = {245, 246, -1};
+	int cordsForBridge2[3] = {251, -1};
+
+
+	//handle if a button tile is pressed
+	if (map[cord1] == 'B' || map[cord2] == 'B') {
+		addBridge(map, cordsForBridge);
+	}
+
+	if (map[cord1] == 'S') {
+		addBridge(map, cordsForBridge2);
+	}
+}
+
 int checkGameStatus(int cord1, int cord2, int state) {
 	//0 is running, 1 is lost, 2 is win
 	int statusFlag = 0;
@@ -102,21 +127,37 @@ int checkGameStatus(int cord1, int cord2, int state) {
 
 int main() {
 	//game loop
-	Player testPlayer = Player(mapRowSize);
-	map = readInMap("level1");
 
+	//init levels
+	Level level1 = Level(readInMap("level1"));
+	Level level2 = Level(readInMap("level2"));
+	Level levels[2] = { level1, level2 };
+	int currentLevel = 0;
+
+	Player testPlayer = Player(mapRowSize);
+	
+	int gameStatus = -1;
 	while (1) {
 		//display
-		printMap(map, testPlayer.cordinate);
+		printMap(levels[currentLevel].map, testPlayer.cordinate);
 
 		//get user input
 		char input = _getch();
 		testPlayer.updatePlayerCords(input);
 
 		//see if the user won, lost or is still going
-		if (checkGameStatus(testPlayer.cordinate[0], testPlayer.cordinate[1], testPlayer.state)) {
+		gameStatus = checkGameStatus(testPlayer.cordinate[0], testPlayer.cordinate[1], testPlayer.state);
+		if (gameStatus) {
+			if (gameStatus == 2) {
+				currentLevel++;
+			}
 			break;
+			//map = readInMap("level2");
+			//testPlayer.cordinate[0] = 164;
+			//testPlayer.cordinate[1] = 165;
 		}
+
+		handleMapTiles(testPlayer.cordinate[0], testPlayer.cordinate[1]);
 
 		//clear the screen
 		system("CLS");

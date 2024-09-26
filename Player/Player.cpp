@@ -8,8 +8,13 @@
 
 //constructor
 Player::Player(int mapRowSize) {
-	cordinate[0] = {2};
-	cordinate[1] = {3};
+	//level 1 spawn cords
+	//cordinate[0] = {2};
+	//cordinate[1] = {3};
+
+	//level 2 spawn cords
+	cordinate[0] = {122};
+	cordinate[1] = {123};
 
 	//0 is vertical, 1 is horizontal, 2 is horizontal otherway lol
 	state = 2;
