@@ -8,6 +8,9 @@
 * - implement the fragile tiles that break when vertical
 * - look into why it wraps back to level 1 in the array when you
 * beat the levels
+* 
+* - A little ahead of myself but the main menu music should be mr ceo by thaiboy digital
+* and the actual game (like when the user is playing it) can have just the instrumental
 */
 
 #include <stdio.h>
