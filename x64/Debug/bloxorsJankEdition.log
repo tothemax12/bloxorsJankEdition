@@ -1,3 +1,7 @@
-﻿  bloxorsJankEdition.cpp
-C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\bloxorsJankEdition.cpp(95,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  bloxorsJankEdition.vcxproj -> C:\Users\ander\source\repos\bloxorsJankEdition\x64\Debug\bloxorsJankEdition.exe
+﻿  Level.cpp
+  bloxorsJankEdition.cpp
+C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\bloxorsJankEdition.cpp(112,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(1134,5): error MSB6006: "link.exe" exited with code 1120.
+Level.obj : error LNK2019: unresolved external symbol "public: __cdecl Map::Map(void)" (??0Map@@QEAA@XZ) referenced in function "public: __cdecl Level::Level(int,int,int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (??0Level@@QEAA@HHHV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+C:\Users\ander\source\repos\bloxorsJankEdition\x64\Debug\bloxorsJankEdition.exe : fatal error LNK1120: 1 unresolved externals

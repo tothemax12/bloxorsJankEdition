@@ -18,6 +18,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Player\Player.h"
+#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Map\Map.h"
 #include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Level\Level.h"
 
 //libraries for reading in a map
@@ -52,9 +53,10 @@ std::string readInMap(std::string mapName) {
 
 	return map;
 }
+
 //init levels
-Level level1 = Level(readInMap("level1"), 122, 123, 2);
-Level level2 = Level(readInMap("level2"), 122, 123, 2);
+Level level1 = Level(122, 123, 2, "level1");
+Level level2 = Level(122, 123, 2, "level2");
 Level levels[2];
 
 void initializeLevels() { 
@@ -220,7 +222,8 @@ void handleWin(Player &player) {
 	player.cordinate[0] = levels[currentLevel].playerSpawnCords[0];
 	player.cordinate[1] = levels[currentLevel].playerSpawnCords[1];
 	player.state = levels[currentLevel].initialState;
-	map = levels[currentLevel].map;
+	//map = levels[currentLevel].mapObj.mapStr;
+	map = "";
 }
 
 void respawn(Player& player) {
@@ -238,7 +241,8 @@ int main() {
 	levels[1] = level2;
 
 	//game loop
-	map = levels[currentLevel].map;
+	//map = levels[currentLevel].mapObj.mapStr;
+	map = "";
 
 	Player testPlayer = Player(mapRowSize);
 

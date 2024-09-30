@@ -1,14 +1,18 @@
 #pragma once
 #include <string>
-//#include <stdlib.h>
+#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Map\Map.h"
+
 class Level
 {
 public:
 	Level();
-	Level(std::string map, int spawnCord1, int spawnCord2, int initialState);
-	std::string map;
+	Level(int spawnCord1, int spawnCord2, int playerInitialState, std::string nameOfMapFile);
 	int playerSpawnCords[2];
 	int initialState;
+
+	//map for each level
+	Map mapObj;
+	std::string nameOfMapFile;
 
 	//information relevant to a bridge
 	struct bridge {
