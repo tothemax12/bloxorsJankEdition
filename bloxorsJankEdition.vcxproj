@@ -105,6 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Level; C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Map</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,7 +131,13 @@
   <ItemGroup>
     <ClCompile Include="bloxorsJankEdition.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="Player\Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Level\Level.h" />
+    <ClInclude Include="Map\Map.h" />
+    <ClInclude Include="Player\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

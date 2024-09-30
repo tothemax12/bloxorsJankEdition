@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Map\Map.h"
+#include "Map.h"
 
 class Level
 {

@@ -1,4 +1,4 @@
-#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Player\Player.h"
+#include "Player.h"
 #include <stdlib.h>
 
 //definitions of block state

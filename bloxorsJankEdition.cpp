@@ -241,8 +241,8 @@ int main() {
 	levels[1] = level2;
 
 	//game loop
-	//map = levels[currentLevel].mapObj.mapStr;
-	map = "";
+	map = levels[currentLevel].mapObj.mapStr;
+	//map = "";
 
 	Player testPlayer = Player(mapRowSize);
 

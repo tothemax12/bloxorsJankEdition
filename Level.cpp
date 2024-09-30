@@ -1,4 +1,4 @@
-#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Level\Level.h"
+#include "Level.h"
 
 void Level::toggleBridge(std::string& map, Level::bridge relaventBridge) {
 	//pressing the switch again will change the bridge
@@ -10,6 +10,7 @@ void Level::toggleBridge(std::string& map, Level::bridge relaventBridge) {
 
 Level::Level(int spawnCord1, int spawnCord2, int playerInitialState, std::string nameOfMapFile) {
 	//init map object here
+	this->mapObj = Map::Map(nameOfMapFile);
 	this->playerSpawnCords[0] = spawnCord1;
 	this->playerSpawnCords[1] = spawnCord2;
 	this->initialState = playerInitialState;
@@ -17,6 +18,7 @@ Level::Level(int spawnCord1, int spawnCord2, int playerInitialState, std::string
 
 Level::Level() {
 	//init map object here
+	this->mapObj = Map::Map("level1");
 	this->playerSpawnCords[0] = 0;
 	this->playerSpawnCords[1] = 0;
 	this->initialState = 0;

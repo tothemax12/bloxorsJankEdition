@@ -24,5 +24,19 @@
     <ClCompile Include="Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Map\Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Player\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

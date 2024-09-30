@@ -1,4 +1,9 @@
-#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Map\Map.h"
+#include "Map.h"
+
+//libraries for reading in a map
+#include <fstream>
+#include <iostream>
+
 //Implementation of Map class
 void Map::printMap(std::string map, int playerCords[]) {
 	map[playerCords[0]] = '0';
