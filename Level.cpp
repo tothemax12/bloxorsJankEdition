@@ -3,7 +3,8 @@
 //init levels
 Level level1;
 Level level2;
-Level levels[2];
+Level level3;
+Level levels[3];
 
 void initializeLevels() {
 	int* level1EndBridgeCords = new int[3]{0, 0, -1};
@@ -42,11 +43,25 @@ void initializeLevels() {
 	level2Bridges[2] = level2EndBridge;
 	//end of level 2 stuff---------------------------------------------------------
 
+	//Level 3 Stuff----------------------------------------------------------------
+	int* level3EndBridgeCords = new int[3] {0, 0, -1};
+	Level::bridge* level3EndBridge = new Level::bridge{
+	level3EndBridgeCords,//array for where to put the bridge
+	-1,//associated tile on the map
+	};
+
+	Level::bridge** level3Bridges = new Level::bridge * [3];
+	level3Bridges[0] = level3EndBridge;
+	//end of level 3 stuff----------------------------------------------------------
+
+
 	//putting it together
 	level1 = Level(122, 123, 2, "level1", level1Bridges);
 	level2 = Level(122, 123, 2, "level2", level2Bridges);
+	level3 = Level(122, 123, 2, "level3", level3Bridges);
 	levels[0] = level1;
 	levels[1] = level2;
+	levels[2] = level3;
 }
 
 void Level::toggleBridge(std::string& map, Level::bridge relaventBridge) {

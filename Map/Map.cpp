@@ -18,6 +18,7 @@ void Map::printMap(std::string map, int playerCords[]) {
 		}
 
 		if (map[i] == '.') {
+			printf(" ");
 			continue;
 		}
 

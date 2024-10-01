@@ -37,5 +37,6 @@ public:
 //level definitions
 extern Level level1;
 extern Level level2;
-extern Level levels[2];
+extern Level level3;
+extern Level levels[3];
 extern void initializeLevels();

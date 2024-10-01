@@ -152,7 +152,7 @@ int main() {
 	int gameStatus = -1;
 	while (1) {
 		//display
-		levels[currentLevel].mapObj.printMap(map, testPlayer.cordinates);
+		levels[currentLevel].mapObj.printMap(levels[currentLevel].mapObj.mapStr, testPlayer.cordinates);
 
 		//get user input
 		char input = _getch();
