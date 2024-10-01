@@ -5,8 +5,6 @@
 class Level
 {
 public:
-	Level();
-	Level(int spawnCord1, int spawnCord2, int playerInitialState, std::string nameOfMapFile);
 	int playerSpawnCords[2];
 	int initialState;
 
@@ -30,4 +28,14 @@ public:
 	bridge** levelBridges;
 
 	void toggleBridge(std::string& map, bridge relaventBridge);
+	/*void initializeLevels();*/
+
+	Level();
+	Level(int spawnCord1, int spawnCord2, int playerInitialState, std::string nameOfMapFile, bridge** levelBridges);
 };
+
+//level definitions
+extern Level level1;
+extern Level level2;
+extern Level levels[2];
+extern void initializeLevels();

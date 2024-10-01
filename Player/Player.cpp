@@ -9,8 +9,8 @@
 //constructor
 Player::Player(int mapRowSize) {
 	//level 1 spawn cords
-	cordinate[0] = {2};
-	cordinate[1] = {3};
+	cordinates[0] = {2};
+	cordinates[1] = {3};
 
 	//level 2 spawn cords
 	//cordinate[0] = {122};
@@ -27,29 +27,29 @@ int** Player::normalizePlayerCords() {
 	int* cord2 = NULL;
 	int* cords[2] = {NULL, NULL};
 		if (state == HORIZONTAL) {
-			if (cordinate[0] > cordinate[1]) {
-				cord1 = (cordinate);
-				cord2 = (cordinate + 1);
+			if (cordinates[0] > cordinates[1]) {
+				cord1 = (cordinates);
+				cord2 = (cordinates + 1);
 			}
 			else {
-				cord1 = (cordinate + 1);
-				cord2 = (cordinate);
+				cord1 = (cordinates + 1);
+				cord2 = (cordinates);
 			}
 		}
 		else if (state == HORIZONTAL2) {
-			if (cordinate[0] < cordinate[1]) {
-				cord1 = (cordinate);
-				cord2 = (cordinate + 1);
+			if (cordinates[0] < cordinates[1]) {
+				cord1 = (cordinates);
+				cord2 = (cordinates + 1);
 			}
 			else {
-				cord1 = (cordinate + 1);
-				cord2 = (cordinate);
+				cord1 = (cordinates + 1);
+				cord2 = (cordinates);
 			}
 		}
 		else if (state == VERTICAL) {
-			cordinate[1] = cordinate[0];
-			cord1 = (cordinate);
-			cord2 = (cordinate + 1);
+			cordinates[1] = cordinates[0];
+			cord1 = (cordinates);
+			cord2 = (cordinates + 1);
 		}
 		cords[0] = cord1;
 		cords[1] = cord2;

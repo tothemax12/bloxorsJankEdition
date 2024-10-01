@@ -1,7 +1,7 @@
 #pragma once 
 class Player {
 public:
-	int cordinate[2];
+	int cordinates[2];
 	//0 is vertical, 1 is horizontal, 2 is horizontal otherway lol
 	int state;
 	int playerChar;

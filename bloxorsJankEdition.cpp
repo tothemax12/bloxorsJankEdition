@@ -11,6 +11,10 @@
 * 
 * - A little ahead of myself but the main menu music should be mr ceo by thaiboy digital
 * and the actual game (like when the user is playing it) can have just the instrumental
+* 
+* Dev log - 10/1/24
+* - Added fragile tiles and their functionality
+* - Cleaned up this file by removing map functionality (it's in the map class)
 */
 
 #include <stdio.h>
@@ -18,8 +22,8 @@
 #include <conio.h>
 #include <stdlib.h>
 #include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Player\Player.h"
-#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Map\Map.h"
-#include "C:\Users\ander\source\repos\bloxorsJankEdition\bloxorsJankEdition\Level\Level.h"
+#include "Map.h"
+#include "Level.h"
 
 //libraries for reading in a map
 #include <fstream>
@@ -33,123 +37,24 @@ std::string map = "";
 int mapRowSize = 60;
 int currentLevel = 0;
 
-//map reading in functionality
-std::string readInMap(std::string mapName) {
-	std::string map;
-
-	// Open the input file named "input.txt"
-	std::ifstream inputFile(".\\maps\\" + mapName + ".txt");
-
-	// Check if the file is successfully opened
-	if (!inputFile.is_open()) {
-		return "-1";
-	}
-	else {
-		//read in the map
-		getline(inputFile, map);
-	}
-
-	inputFile.close();
-
-	return map;
-}
-
-//init levels
-Level level1 = Level(122, 123, 2, "level1");
-Level level2 = Level(122, 123, 2, "level2");
-Level levels[2];
-
-void initializeLevels() { 
-	int* level1EndBridgeCords = new int[3]{0, 0, -1};
-	Level::bridge* level1EndBridge = new Level::bridge{
-	level1EndBridgeCords,//array for where to put the bridge
-	-1,//associated tile on the map
-	};
-
-	Level::bridge** level1Bridges = new Level::bridge * [3];
-	level1Bridges[0] = level1EndBridge;
-
-	level1.levelBridges = level1Bridges;
-
-	//Bridges related to level2
-	int* level2Bridge1Cords = new int[3]{245, 246, -1 };
-	Level::bridge* level2Bridge1 = new Level::bridge {
-		level2Bridge1Cords,//array for where to put the bridge
-		183,//associated tile on the map
-	};
-
-	int* level2Bridge2Cords = new int[2]{ 251, -1 };
-	Level::bridge* level2Bridge2 = new Level::bridge {
-		level2Bridge2Cords,//array for where to put the bridge
-		129,//associated tile on the map
-	};
-
-	int* level2EndBridgeCords= new int[3]{0, 0, -1};
-	Level::bridge* level2EndBridge = new Level::bridge{
-	level2EndBridgeCords,//array for where to put the bridge
-	-1,//associated tile on the map
-	};
-
-	Level::bridge** level2Bridges = new Level::bridge*[3];
-	level2Bridges[0] = level2Bridge1;
-	level2Bridges[1] = level2Bridge2;
-	level2Bridges[2] = level2EndBridge;
-
-	level2.levelBridges = level2Bridges;
-}
-
-//level[currentLevel].levelBridges[0]
-
-//levels[currentLevel].levelBridges[i]->associatedTileOnMapCord
-
-//parsing a map string
-//if you come across an X, move back one char and print a new line.
-//this is so we print the boundaries correctly
-void printMap(std::string map, int playerCords[]) {
-	map[playerCords[0]] = '0';
-	map[playerCords[1]] = '0';
-
-	int mapLen = map.length();
-	for (int i = 0; i < mapLen; i++) {
-		//new row
-		if (map[i] == ',') {
-			printf("\n");
-			continue;
-		}
-
-		if (map[i] == '.') {
-			continue;
-		}
-
-		printf("%c", map[i]);
-	}
-}
-
-//print just the map so player is not on the hole
-void printMapForAWin(std::string map) {
-	for (int i = 0; i < map.length(); i++) {
-		//new row
-		if (!(i % 6)) {
-			printf("\n");
-		}
-
-		printf("%c", map[i]);
-	}
-}
-
 //1 if you lost
 int checkLevelLose(int cord1, int cord2) {
-	return (map[cord1] == '#' || map[cord2] == '#');
+	int boundsCheck = (levels[currentLevel].mapObj.mapStr[cord1] == '#' || levels[currentLevel].mapObj.mapStr[cord2] == '#');
+	
+	//user falls if they are vertical on a fragile tile
+	int fragileTileCheck = (levels[currentLevel].mapObj.mapStr[cord1] == 'W' && levels[currentLevel].mapObj.mapStr[cord2] == 'W' && (cord1 == cord2));
+
+	return (boundsCheck || fragileTileCheck);
 }
 
 int checkLevelWin(int cord, int state) {
 	//check if the player vertically fell into the hole
-	return ((state == 0) && (map[cord] == 'H'));
+	return ((state == 0) && (levels[currentLevel].mapObj.mapStr[cord] == 'H'));
 }
 
 //modifies the map by adding walkable tiles when a button is pressed
 //second arg is to be passed an array with -1 indicating the end is reached
-void addBridge(std::string &map, int* cordsOfTilesToReplace, Level::bridge& relaventBridge ) {
+void addBridge(std::string &map, int* cordsOfTilesToReplace, Level::bridge& relaventBridge) {
 	//pressing the switch again will change the bridge
 	for (int i = 0; *(cordsOfTilesToReplace + i) != -1; i++) {
 		map[cordsOfTilesToReplace[i]] = relaventBridge.bridgeOn ? ('#') : ('X');
@@ -169,7 +74,7 @@ void handleMapTiles(int cord1, int cord2) {
 			//see if this is the bridge for the tile we are on
 			if (levels[currentLevel].levelBridges[i]->associatedTileOnMapCord == cord1 || levels[currentLevel].levelBridges[i]->associatedTileOnMapCord == cord2) {
 				//if we found the bridge then we can replace the tiles on the map
-				addBridge(map, levels[currentLevel].levelBridges[i]->cordsOfTilesToReplace, *levels[currentLevel].levelBridges[i]);
+				addBridge(levels[currentLevel].mapObj.mapStr, levels[currentLevel].levelBridges[i]->cordsOfTilesToReplace, *levels[currentLevel].levelBridges[i]);
 			}
 		}
 
@@ -181,7 +86,7 @@ void handleMapTiles(int cord1, int cord2) {
 			//see if this is the bridge for the tile we are on
 			if (levels[currentLevel].levelBridges[i]->associatedTileOnMapCord == cord1 || levels[currentLevel].levelBridges[i]->associatedTileOnMapCord == cord2) {
 				//if we found the bridge then we can replace the tiles on the map
-				addBridge(map, levels[currentLevel].levelBridges[i]->cordsOfTilesToReplace, *levels[currentLevel].levelBridges[i]);
+				addBridge(levels[currentLevel].mapObj.mapStr, levels[currentLevel].levelBridges[i]->cordsOfTilesToReplace, *levels[currentLevel].levelBridges[i]);
 			}
 		}
 	}
@@ -198,8 +103,8 @@ int checkGameStatus(int cord1, int cord2, int state) {
 
 	if (checkLevelWin(cord1, state)) {
 		system("CLS");
-		map[cord1] = 'H';
-		printMapForAWin(map);
+		levels[currentLevel].mapObj.mapStr[cord1] = 'H';
+		levels[currentLevel].mapObj.printMapForAWin(levels[currentLevel].mapObj.mapStr);
 		printf("You Won!");
 		statusFlag = 2;
 	}
@@ -219,17 +124,17 @@ void resetLevel() {
 
 void handleWin(Player &player) {
 	currentLevel++;
-	player.cordinate[0] = levels[currentLevel].playerSpawnCords[0];
-	player.cordinate[1] = levels[currentLevel].playerSpawnCords[1];
+	player.cordinates[0] = levels[currentLevel].playerSpawnCords[0];
+	player.cordinates[1] = levels[currentLevel].playerSpawnCords[1];
 	player.state = levels[currentLevel].initialState;
-	//map = levels[currentLevel].mapObj.mapStr;
-	map = "";
+	map = levels[currentLevel].mapObj.mapStr;
+	//map = "";
 }
 
 void respawn(Player& player) {
 	//put them back where they spawn
-	player.cordinate[0] = levels[currentLevel].playerSpawnCords[0];
-	player.cordinate[1] = levels[currentLevel].playerSpawnCords[1];
+	player.cordinates[0] = levels[currentLevel].playerSpawnCords[0];
+	player.cordinates[1] = levels[currentLevel].playerSpawnCords[1];
 	player.state = levels[currentLevel].initialState;
 
 	//have to reset all the bridges and stuff too
@@ -237,40 +142,34 @@ void respawn(Player& player) {
 
 int main() {
 	initializeLevels();
-	levels[0] = level1;
-	levels[1] = level2;
 
 	//game loop
 	map = levels[currentLevel].mapObj.mapStr;
-	//map = "";
-
 	Player testPlayer = Player(mapRowSize);
+	testPlayer.cordinates[0] = levels[currentLevel].playerSpawnCords[0];
+	testPlayer.cordinates[1] = levels[currentLevel].playerSpawnCords[1];
 
 	int gameStatus = -1;
 	while (1) {
 		//display
-		printMap(map, testPlayer.cordinate);
+		levels[currentLevel].mapObj.printMap(map, testPlayer.cordinates);
 
 		//get user input
 		char input = _getch();
 		testPlayer.updatePlayerCords(input);
 
 		//see if the user won, lost or is still going
-		gameStatus = checkGameStatus(testPlayer.cordinate[0], testPlayer.cordinate[1], testPlayer.state);
+		gameStatus = checkGameStatus(testPlayer.cordinates[0], testPlayer.cordinates[1], testPlayer.state);
 		if (gameStatus) {
 			if (gameStatus == WIN) {
 				handleWin(testPlayer);
 			}
 			else if (gameStatus == LOST) {
 				respawn(testPlayer);
-				//printMap(map, testPlayer.cordinate);
 			}
-			//map = readInMap("level2");
-			//testPlayer.cordinate[0] = 164;
-			//testPlayer.cordinate[1] = 165;
 		}
 
-		handleMapTiles(testPlayer.cordinate[0], testPlayer.cordinate[1]);
+		handleMapTiles(testPlayer.cordinates[0], testPlayer.cordinates[1]);
 
 		//clear the screen
 		system("CLS");
