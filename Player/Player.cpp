@@ -22,6 +22,8 @@ Player::Player(int mapRowSize) {
 	this->mapRowSize = mapRowSize;
 };
 
+//normalized Player cords returns AN ARRAY OF POINTERS THAT POINTS TO THE PLAYERS CORDINATES ARRAY,
+//that is why updatePlayerCords() can modify the members of players
 int** Player::normalizePlayerCords() {
 	int* cord1 = NULL;
 	int* cord2 = NULL;
